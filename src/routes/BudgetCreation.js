@@ -1,9 +1,8 @@
-//import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import NestedFieldArray from '../components/NestedFieldArray';
-
 import axios from 'axios';
 import { useEffect, useState } from "react";
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 const defaultValues = {
     test: [
@@ -23,8 +22,10 @@ const defaultValues = {
 const BudgetCreateForm = () => {
 
     const { control, register, handleSubmit, } = useForm({ defaultValues });
-    const { fields, append } = useFieldArray({ control, name: "test" });
+    const { fields } = useFieldArray({ control, name: "test" });
     const [token, setToken] = useState('');
+
+    let navigate = useNavigate();
 
     // Save token in the state
     useEffect(() => {
@@ -43,7 +44,15 @@ const BudgetCreateForm = () => {
             databody,
             { headers: { Authorization: `Bearer ${token}` } }
         ).then(res => {
-            alert("El presupuesto ha sido guardado correctamente")
+            const data = JSON.stringify(res.data);
+            alert("El presupuesto ha sido guardado correctamente");
+            navigate({
+                pathname: "../budget-result",
+                replace: true,
+                search: createSearchParams({
+                    dataRes: data
+                }).toString()
+            })
         }).catch(err => {
             alert("Hubo un error en la carga del presupuesto")
         });
@@ -61,7 +70,7 @@ const BudgetCreateForm = () => {
                             <div className="two fields">
                                 <div className="field">
                                     <div className="ui header" >Nombre del Presupuesto</div>
-                                    <input placeholder="Ingrese el nombre" {...register(`test.${index}.name`)} required/>
+                                    <input placeholder="Ingrese el nombre" {...register(`test.${index}.name`)} required />
                                 </div>
                                 <div className="field">
                                     <div className="ui header" >Acces Token</div>

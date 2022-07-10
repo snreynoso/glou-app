@@ -43,7 +43,7 @@ export default function NestedFieldArray({ nestIndex, control, register }) {
                             <input placeholder="Nombre" required {...register(`test.${nestIndex}.nestedArray.${k}.name`)} />
                         </td>
                         <td>
-                            <input placeholder="Monto" required {...register(`test.${nestIndex}.nestedArray.${k}.amount`)} />
+                             <input placeholder="Monto" required {...register(`test.${nestIndex}.nestedArray.${k}.amount`)} />
                         </td>
                         <td>
                             <input className="ui red button" type="button" onClick={() => remove(k)} value="X" />
