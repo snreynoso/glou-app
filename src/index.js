@@ -4,8 +4,8 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
-import Home from "./routes/Home";
-import BudgetCreation from "./routes/BudgetCreation";
+import Login from "./routes/Login";
+import BudgetCreatForm from "./routes/BudgetCreation";
 import BudgetResult from "./routes/BudgetResult";
 
 const root = ReactDOM.createRoot(
@@ -14,9 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
     <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="buget-creation" element={<BudgetCreation />} />
-            <Route path="buget-result" element={<BudgetResult />} />
+            <Route path="/" element={<Login />} />
+            <Route path="budget-creation" element={<BudgetCreatForm />} />
+            <Route path="budget-result" element={<BudgetResult />} />
         </Routes>
     </BrowserRouter>
 );
