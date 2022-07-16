@@ -103,7 +103,6 @@ const BudgetResult = () => {
                 <Link to='../budget-creation'>
                     <input className="ui green button" type="submit" value="Crear nuevo presupuesto" style={{ marginTop: '5px' }} />
                 </Link>
-
             </div>
         </>
     );
