@@ -5,7 +5,7 @@ import BudgetLayout from './components/BudgetLayout';
 // Import pages
 import Login from "./pages/Login";
 import BudgetCreation from "./pages/BudgetCreation";
-import BudgetResult from "./pages/BudgetResult";
+import BudgetResult   from "./pages/BudgetResult";
 
 function App() {
     return (

@@ -1,9 +1,9 @@
-import { useSelector, useDispatch } from "react-redux/es/exports";
-import { unsetUser } from "../reducers/user/userSlice";
+import { useSelector } from "react-redux/es/exports";
 import { useForm, useFieldArray } from "react-hook-form";
 import NestedFieldArray from '../components/NestedFieldArray';
 import axios from 'axios';
 import { createSearchParams, useNavigate } from 'react-router-dom';
+import Header from "../components/Header";
 
 const defaultValues = {
     test: [
@@ -22,13 +22,10 @@ const defaultValues = {
 
 const BudgetCreation = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     // Leer de redux
     const user = useSelector(state => state.user);
     const token = user.token;
-
-    console.log(token);
 
     const { control, register, handleSubmit, } = useForm({ defaultValues });
     const { fields } = useFieldArray({ control, name: "test" });
@@ -45,13 +42,10 @@ const BudgetCreation = () => {
             databody,
             { headers: { Authorization: `Bearer ${token}` } }
         ).then(res => {
-            // Delete user data from redux
-            dispatch(unsetUser());
-
             const data = JSON.stringify(res.data);
             alert("El presupuesto ha sido guardado correctamente");
             navigate({
-                pathname: "../budget/budget-result",
+                pathname: "../budget-result",
                 replace: true,
                 search: createSearchParams({
                     dataRes: data
@@ -64,10 +58,10 @@ const BudgetCreation = () => {
     };
 
     return (
-        <div className="ui segment">
-            <form className="ui small form" onSubmit={handleSubmit(onSubmit)}>
-                <h1>Crear nuevo presupuesto</h1>
+        <div className="ui segment placeholder">
+            <Header title={"Crear nuevo presupuesto"} />
 
+            <form className="ui small form" onSubmit={handleSubmit(onSubmit)}>
                 {fields.map((item, index) => {
                     return (
                         <div key={item.id}>
@@ -97,6 +91,7 @@ const BudgetCreation = () => {
                                     <NestedFieldArray nestIndex={index} {...{ control, register }} />
                                 </tbody>
                             </table>
+
                         </div>
                     );
                 })}
