@@ -1,7 +1,8 @@
+import { useSelector, useDispatch } from "react-redux/es/exports";
+import { unsetUser } from "../reducers/user/userSlice";
 import { useForm, useFieldArray } from "react-hook-form";
 import NestedFieldArray from '../components/NestedFieldArray';
 import axios from 'axios';
-import { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from 'react-router-dom';
 
 const defaultValues = {
@@ -19,18 +20,18 @@ const defaultValues = {
     ]
 };
 
-const BudgetCreateForm = () => {
+const BudgetCreation = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    // Leer de redux
+    const user = useSelector(state => state.user);
+    const token = user.token;
+
+    console.log(token);
 
     const { control, register, handleSubmit, } = useForm({ defaultValues });
     const { fields } = useFieldArray({ control, name: "test" });
-    const [token, setToken] = useState('');
-
-    let navigate = useNavigate();
-
-    // Save token in the state
-    useEffect(() => {
-        setToken(JSON.parse(localStorage.getItem('token')));
-    }, []);
 
     const onSubmit = async data => {
         const databody = {
@@ -44,16 +45,20 @@ const BudgetCreateForm = () => {
             databody,
             { headers: { Authorization: `Bearer ${token}` } }
         ).then(res => {
+            // Delete user data from redux
+            dispatch(unsetUser());
+
             const data = JSON.stringify(res.data);
             alert("El presupuesto ha sido guardado correctamente");
             navigate({
-                pathname: "../budget-result",
+                pathname: "../budget/budget-result",
                 replace: true,
                 search: createSearchParams({
                     dataRes: data
                 }).toString()
             })
-        }).catch(err => {
+        }).catch(error => {
+            console.log(error);
             alert("Hubo un error en la carga del presupuesto")
         });
     };
@@ -101,4 +106,4 @@ const BudgetCreateForm = () => {
     );
 };
 
-export default BudgetCreateForm;
+export default BudgetCreation;
